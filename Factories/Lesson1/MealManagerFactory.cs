@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Factories.Lesson1.Factory
@@ -32,7 +33,7 @@ namespace Factories.Lesson1.Factory
 
             foreach(var mealtype in MealFactory.AvailableMeals)
             {
-                Console.WriteLine($"{mealtype.Id} {mealtype.Name}");
+                Console.WriteLine($"{mealtype.Id}) {mealtype.Description}");
             }
 
             Console.Write("Enter your choice: ");
@@ -41,24 +42,33 @@ namespace Factories.Lesson1.Factory
 
         // Processing of the user input is offloaded to a different method since the main should care what actually happens, just
         // that the program doesn't fail.
-        private void ProcessMeal(string mealType)
+        private void ProcessMeal(string selectedType)
         {
-            var meal = MealFactory.CreateMeal(mealType);
+            var mealType = MealFactory.AvailableMeals.FirstOrDefault(x => x.Id.Equals(selectedType, StringComparison.OrdinalIgnoreCase)).MealType;
 
-            Console.WriteLine("Invalid selection. Please try again.");
+            if (mealType == null) 
+            {
+                Console.WriteLine("Invalid selection. Please try again.");
+                return;
+            }
+
+            var meal = MealFactory.CreateMeal(mealType);
+            meal.Prepare();
+
             return;
         }        
     }
 
     public static class MealFactory
     {
-        public static List<(string Id, string Name, string Typename, Type MealType)> AvailableMeals = new List<(string, string, string, Type)>
+        // We're hard-coding this but it could easily be populated from a db or file or service
+        public static List<(string Id, string Description, Type MealType)> AvailableMeals = new List<(string, string, Type)>
         {
-            { ("1", "Breakfast", nameof(BreakfastMeal), typeof(BreakfastMeal)) },
-            { ("2", "Lunch", nameof(LunchMeal), typeof(LunchMeal)) },
-            { ("3", "Snack", nameof(SnackMeal), typeof(SnackMeal)) },
-            { ("4", "Dinner", nameof(DinnerMeal), typeof(DinnerMeal)) },
-            { ("5", "Dessert", nameof(DessertMeal), typeof(DessertMeal)) }
+            { ("1", "Breakfast", typeof(BreakfastMeal)) },
+            { ("2", "Lunch", typeof(LunchMeal)) },
+            { ("3", "Snack", typeof(SnackMeal)) },
+            { ("4", "Dinner", typeof(DinnerMeal)) },
+            { ("5", "Dessert", typeof(DessertMeal)) }
         };
         
         public static IMeal CreateMeal<T>() where T : IMeal, new()
@@ -75,8 +85,8 @@ namespace Factories.Lesson1.Factory
     public interface IMeal
     {
         string MealName { get; }
-        string MealCode { get; }
         void Prepare();
+
     }
 
     // Implement the interface in the abstract base class. Now all meal objects can
@@ -84,7 +94,6 @@ namespace Factories.Lesson1.Factory
     public abstract class Meal : IMeal
     {
         public abstract string MealName { get; }
-        public virtual string MealCode => GetType().Name;
 
         public virtual void Prepare()
         {
@@ -92,9 +101,7 @@ namespace Factories.Lesson1.Factory
         }
     }
 
-    // The following don't need to be updated because we took
-    // the time to refactor the functionality into an abstract
-    // base class.
+    // Concrete classes for our different meal types.
     public class BreakfastMeal : Meal
     {
         public override string MealName => "Breakfast";

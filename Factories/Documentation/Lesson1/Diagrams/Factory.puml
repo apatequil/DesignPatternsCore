@@ -1,0 +1,27 @@
+@startuml Factory
+
+
+interface IProduct
+
+class ProductA implements IProduct
+class ProductB implements IProduct
+class ProductC implements IProduct
+
+
+class ProductFactory {
+	+GetProduct(string productName) : IProduct
+	+GetProduct(Type productType) : IProduct
+	+GetProduct<T>() where T is IProduct : IProduct
+}
+
+class Application {
+
+	+ProductFactory Factory
+	Main() : void
+}
+
+Application --> ProductFactory
+
+ProductFactory --> IProduct
+
+@enduml

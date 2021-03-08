@@ -1,0 +1,49 @@
+﻿@startuml MealFactory
+skinparam LineType Ortho
+
+package Consumer {
+class Application {
+	{method} void Run()
+}
+
+interface IMeal {
+	string MealName
+	void Prepare()
+}
+
+class MealFactory {
+	+{static} List<(Id, Description, MealType)> AvailableMeals
+	+{static} IMeal CreateMeal<T>() where T implements IMeal
+	+{static} CreateMeal(Type mealType) : IMeal
+}
+}
+
+
+package HiddenFromConsumer {
+
+abstract Meal implements IMeal {
+	+{abstract} string MealName
+	+{abstract} void Prepare()
+}
+
+
+class Breakfast extends Meal {
+	+{static} string MealName
+}
+class Lunch extends Meal {
+	+{static} string MealName
+}
+class Snack extends Meal {
+	+{static} string MealName
+}
+class Dinner extends Meal {
+	+{static} string MealName
+}
+class Dessert extends Meal {
+	+{static} string MealName
+}
+
+MealFactory --> IMeal
+Application --> MealFactory
+}
+@enduml
