@@ -1,0 +1,17 @@
+@startuml FactoryMethod
+skinparam LineType Ortho
+
+interface IFactory {
+	CreateObject() : Product
+}
+
+
+class ConcreteFactory implements IFactory {
+	CreateObject() : Product
+}
+
+abstract Product
+note right: Can be abstract or not
+class ProductA extends Product
+class ProductB extends Product
+@enduml
