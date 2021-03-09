@@ -1,5 +1,5 @@
 @startuml Factory
-
+skinparam LineType Ortho
 
 interface IProduct
 
@@ -14,13 +14,14 @@ class ProductFactory {
 	+GetProduct<T>() where T is IProduct : IProduct
 }
 
-class Application {
+class Consumer {
 
 	+ProductFactory Factory
 	Main() : void
 }
 
-Application --> ProductFactory
+Consumer --> ProductFactory
+Consumer --> IProduct
 
 ProductFactory --> IProduct
 
