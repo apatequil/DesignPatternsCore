@@ -1,0 +1,59 @@
+@startuml Abstract Factory
+skinparam LineType Ortho
+
+class Client {
+
+}
+
+interface AbstractFactory {
+	CreateProductA()
+	CreateProductB()
+}
+
+class ConcreteFactoryA implements AbstractFactory {
+	CreateProductA()
+	CreateProductB()
+}
+
+class ConcreteFactoryB implements AbstractFactory {
+	CreateProductA()
+	CreateProductB()
+}
+
+
+interface AbstractProductA {
+
+}
+
+interface AbstractProductB {
+
+}
+
+class ConcreteProductA1 implements AbstractProductA {
+
+}
+
+class ConcreteProductA2 implements AbstractProductA {
+
+}
+
+class ConcreteProductB1 implements AbstractProductB {
+
+}
+
+class ConcreteProductB2 implements AbstractProductB {
+
+}
+
+ConcreteFactory1 --> ConcreteProductA1
+ConcreteFactory1 --> ConcreteProductB1
+
+ConcreteFactory2 --> ConcreteProductA2
+ConcreteFactory2 --> ConcreteProductB2
+
+Client ..> AbstractFactory
+Client ..> AbstractProductA
+Client ..> AbstractProductB
+
+
+@enduml
