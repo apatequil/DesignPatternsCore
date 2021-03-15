@@ -26,11 +26,13 @@ namespace Factories.Lesson1.Factory
             }
         }
 
-        // UI code pulled out of main method to reduce its responsibilities
         private string PromptUser()
         {
             Console.WriteLine("Which meal would you like (enter number below)?");
 
+            // Let the factory tell the application what it can do.
+            // This allows changes to the factory's items without
+            // modifying the main application.
             foreach(var mealtype in MealFactory.AvailableMeals)
             {
                 Console.WriteLine($"{mealtype.Id}) {mealtype.Description}");
@@ -40,10 +42,12 @@ namespace Factories.Lesson1.Factory
             return Console.ReadLine();
         }
 
-        // Processing of the user input is offloaded to a different method since the main should care what actually happens, just
-        // that the program doesn't fail.
+        
         private void ProcessMeal(string selectedType)
         {
+            // Could be optimized but convert selected type to the actual type. Again the main
+            // app doesn't care about anything other than using the factory to create the
+            // user's selected object.
             var mealType = MealFactory.AvailableMeals.FirstOrDefault(x => x.Id.Equals(selectedType, StringComparison.OrdinalIgnoreCase)).MealType;
 
             if (mealType == null) 

@@ -38,7 +38,7 @@ namespace Factories.Lesson1.Refactor
             return Console.ReadLine();
         }
 
-        // Processing of the user input is offloaded to a different method since the main should care what actually happens, just
+        // Processing of the user input is offloaded to a different method since the main shouldn't care what actually happens, just
         // that the program doesn't fail.
         private void ProcessMeal(string mealType)
         {
